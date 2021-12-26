@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;——本文允许转载,分享请注明网站出处: ）前端知识点就是这样，越细碎，越是要人老命（bushi）call,apply,bind的区别call,apply,bind的主要作用都是改变this指向。call和apply的主要区别是在传递参数上不同.call后面传递的参数是以逗号的形式分开的，apply传递的参数是数组形式（apply是以A开头，所以这里可以跟Array有关联，即">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试总结 : 一些细碎的知识点">
+<meta property="og:url" content="https://gsnwjd.github.io/2020/08/25/试总结/index.html">
+<meta property="og:site_name" content="关四鸟">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;——本文允许转载,分享请注明网站出处: ）前端知识点就是这样，越细碎，越是要人老命（bushi）call,apply,bind的区别call,apply,bind的主要作用都是改变this指向。call和apply的主要区别是在传递参数上不同.call后面传递的参数是以逗号的形式分开的，apply传递的参数是数组形式（apply是以A开头，所以这里可以跟Array有关联，即">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-12-26T05:01:15.203Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试总结 : 一些细碎的知识点">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;——本文允许转载,分享请注明网站出处: ）前端知识点就是这样，越细碎，越是要人老命（bushi）call,apply,bind的区别call,apply,bind的主要作用都是改变this指向。call和apply的主要区别是在传递参数上不同.call后面传递的参数是以逗号的形式分开的，apply传递的参数是数组形式（apply是以A开头，所以这里可以跟Array有关联，即">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://gsnwjd.github.io/2020/08/25/试总结/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>面试总结 : 一些细碎的知识点 | 关四鸟</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">关四鸟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">——王佳典的漫漫coding之旅</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://gsnwjd.github.io/2020/08/25/试总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gsnwjd王佳典">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="关四鸟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面试总结 : 一些细碎的知识点
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-08-24 16:19:39" itemprop="dateCreated datePublished" datetime="2020-08-24T16:19:39Z">2020-08-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-12-26 05:01:15" itemprop="dateModified" datetime="2021-12-26T05:01:15Z">2021-12-26</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><span style="color:#8c8c8c;border-left:4px solid #ff8453;">&nbsp;&nbsp;——本文允许转载,分享请注明网站出处: ）</span><br><br><span style="color:#ffae52;">前端知识点就是这样，越细碎，越是要人老命（bushi）</span></p><p style="color:#ffb453bb;;font-weight:bold">call,apply,bind的区别</p>call,apply,bind的主要作用都是改变this指向。<br>call和apply的主要区别是在传递参数上不同.<br>call后面传递的参数是以逗号的形式分开的，apply传递的参数是数组形式（apply是以A开头，所以这里可以跟Array有关联，即参数为数组）bind返回的是一个函数形式，如果要执行，则后面要再加一个小括号，例如：bind（obj,参数1，参数2）（），bind只能以逗号分隔形式，不能是数组形式。<p></p>
+<p style="color:#ffb453bb;;font-weight:bold">父传子值，子值不随父值改变</p>监听传值，仍使用旧值。<br><p style="color:#ffb453bb;;font-weight:bold">jQuery实现数据双向绑定</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">    </span><br></pre></td></tr></table></figure><p style="color:#ffb453bb;;font-weight:bold">mvvm定义&amp;&amp;原理</p>Mvvm定义MVVM是Model-View-ViewModel的简写。即模型-视图-视图模型。<span style="color:rgb(126, 85, 66);font-style:italic;font-weight: bolder;">模型</span> 指的是后端传递的数据。  <span style="color:rgb(126, 85, 66);font-style:italic;font-weight: bolder;">视图</span> 指的是所看到的页面。<span style="color:rgb(126, 85, 66);font-style:italic;font-weight: bolder;">视图模型</span>mvvm模式的核心，它是连接view和model的桥梁。<br>它有两个方向：一是将<span style="color:rgb(126, 85, 66);font-style:italic;font-weight: bolder;">模型</span> 转化成<span style="color:rgb(126, 85, 66);font-style:italic;font-weight: bolder;">视图</span>,即将后端传递的数据转化成所看到的页面。实现的方式是：数据绑定。<br>二是将<span style="color:rgb(126, 85, 66);font-style:italic;font-weight: bolder;">视图</span> 转化成<span style="color:rgb(126, 85, 66);font-style:italic;font-weight: bolder;">模型</span>,即将所看到的页面转化成后端的数据。实现的方式是<span style="color:rgb(126, 85, 66);font-style:italic;font-weight: bolder;">DOM 事件监听</span><br>。这两个方向都实现的，我们称之为数据的双向绑定。总结：在MVVM的框架下视图和模型是不能直接通信的。它们通过ViewModel来通信，ViewModel通常要实现一个<span style="color:rgb(126, 85, 66);font-style:italic;font-weight: bolder;">observer观察者</span><br>，当数据发生变化，ViewModel能够监听到数据的这种变化，然后通知到对应的视图做自动更新，而当用户操作视图，ViewModel也能监听到视图的变化，然后通知数据做改动，这实际上就实现了数据的双向绑定。并且MVVM中的View 和 ViewModel可以互相通信。<p style="color:#ffb453bb;font-weight:bold">onready和onload</p><span style="color:rgb(153, 138, 131);font-size:15px;font-weight:bold;">&gt;&gt;因为页面中的代码一般情况下按照，从上到下，从左到右的顺序执行。<br>    所以当js代码需要获取页面中的元素时，如果script标签在元素的前面，需要加window.onload；如果script放在了元素后面，就不需要加 window.onload。</span><br><span style="color:rgb(153, 138, 131);font-size:15px;font-weight:bold;">&gt;&gt;jQuery 的入口函数是在 html 所有标签(DOM)都加载之后，就会去执行。 JavaScript 的 window.onload 事件是等到所有内容，包括外部图片之类的文件加载完后，才会执行。<br><span style="color:rgb(153, 138, 131);font-size:15px;font-weight:bold;">&gt;&gt;onready比onload先执行,执行时间 window.onload必须等到页面内包括图片的所有元素加载完毕后才能执行。 $(document).ready()是DOM结构绘制完毕后就执行，不必等到加载完毕。</span><br><span style="color:rgb(153, 138, 131);font-size:15px;font-weight:bold;">&gt;&gt;onload只执行最后一个而onready可以执行多个。</span></span><p style="color:#ffb453bb;;font-weight:bold">浅拷贝，深拷贝</p>之一：浅拷贝就是拷贝了一层，除了对象是拷贝的引用类型，其他都是直接将值传递，有自己的内存空间的。<br>之二：Object.assign方法，Object.assign是ES6的新函数。Object.assign() 方法可以把任意多个的源对象自身的可枚举属性拷贝给目标对象，然后返回目标对象。但是 Object.assign() 进行的是浅拷贝，拷贝的是对象的属性的引用，而不是对象本身。说是可以拷贝深一层，如果对象只有一层的话，可以使用这个函数作为深拷贝的方法<br>之三：JSON.stringify把对象转成字符串，再用JSON.parse把字符串转成新的对象。<p style="color:#ffb453bb;;font-weight:bold">冒泡（定义&amp;&amp;阻止冒泡）</p><p style="color:#ffb453bb;;font-weight:bold">relative是相对定位，相对于什么？</p><p style="color:#ffb453bb;;font-weight:bold">Vue生命周期</p><p style="color:#ffb453bb;;font-weight:bold">作用域链&amp;&amp;闭包</p><p style="color:#ffb453bb;;font-weight:bold">快速排序和冒泡排序</p><p style="color:#ffb453bb;;font-weight:bold">堆，栈，链表</p><p style="color:#ffb453bb;;font-weight:bold">递归</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">let res = []</span><br><span class="line">function FJ(num)&#123;</span><br><span class="line">    let i = 2</span><br><span class="line">    if(num===2 || num===3 || num===1)&#123;</span><br><span class="line">        res.push(num)</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        for(;i&lt;=num/2;i++)&#123;</span><br><span class="line">            if(num%i === 0)&#123;</span><br><span class="line">                res.push(i)</span><br><span class="line">                FJ(num/i)</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if(i&gt;num/2)&#123;</span><br><span class="line">        res.push(num)</span><br><span class="line">    &#125;</span><br><span class="line">    return res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(FJ(390))</span><br><span class="line">    </span><br></pre></td></tr></table></figure><p style="color:#ffb453bb;;font-weight:bold">数组摊平</p><p style="color:#ffb453bb;;font-weight:bold">Less语法</p>  <span style="font-weight:bold;color:#c7bbad;">变量</span>    平常写的&gt;，变成花括号包裹，&amp;:表示它的上一级选择器，多用于伪类；<br><span style="font-weight:bold;color:#c7bbad;">混入</span>        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.box &#123;</span><br><span class="line">  width: @demo_width;</span><br><span class="line">  height: @demo_height;</span><br><span class="line">  background-color: @color_style;</span><br><span class="line">  font-size: 16px;</span><br><span class="line">  margin: 0 auto;</span><br><span class="line"></span><br><span class="line">  .border;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">    参数带@，@radius: 10px为默认值设置</span><br><span class="line">.border_test1(@border_width) &#123;</span><br><span class="line">      border: @border_width solid green;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">.box_test1 &#123;</span><br><span class="line">      .border_test1(1px);</span><br><span class="line">      width: 100px;</span><br><span class="line">      height: 200px;</span><br><span class="line">      background-color: red;</span><br><span class="line">  &#125;</span><br><span class="line">.box_test2 &#123;</span><br><span class="line">      .border_test1(2px);</span><br><span class="line">      width: 300px;</span><br><span class="line">      height: 200px;</span><br><span class="line">      background-color: yellow;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure><br><span style="font-weight:bold;color:#c7bbad;">运算</span>    less中进行运算操作的时候，不强制你进行运算操作的值必须带单位，只要有一个有单位就可以了<br><span style="font-weight:bold;color:#c7bbad;">函数</span><br><span style="font-weight:bold;color:#c7bbad;">嵌套</span><p style="color:#ffb453bb;;font-weight:bold">flex常用api</p><p style="color:#ffb453bb;;font-weight:bold">gulp</p><p style="color:#ffb453bb;;font-weight:bold">webpack</p><p style="color:#ffb453bb;;font-weight:bold">理解异步，手写Ajax</p>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/" rel="next" title="打印，表单，富文本编辑器（踩坑记录）">
+                <i class="fa fa-chevron-left"></i> 打印，表单，富文本编辑器（踩坑记录）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/27/一小时聊完Less/" rel="prev" title="一小时聊完Less">
+                一小时聊完Less <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">gsnwjd王佳典</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gsnwjd王佳典</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

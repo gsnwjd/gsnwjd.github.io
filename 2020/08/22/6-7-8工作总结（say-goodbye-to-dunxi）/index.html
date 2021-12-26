@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;——本文禁止转载,分享请注明网站出处: ） 6月14号的时候来到上海，6月25号入职敦汐，到8月17号正式离职，离职的原因并不想多说。再回头看码云，所有的commit都变成了一个个的绿格子。 离职以后，我想着要写一篇工作总结。一开始入职的时候，我们是在做一个纺织公司的后台管理系统，后来又在做体育培训管理解决方案。都是基于Jeecg-boot这个框架，Jeecg-boot又是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="打印，表单，富文本编辑器（踩坑记录）">
+<meta property="og:url" content="https://gsnwjd.github.io/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/index.html">
+<meta property="og:site_name" content="关四鸟">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;——本文禁止转载,分享请注明网站出处: ） 6月14号的时候来到上海，6月25号入职敦汐，到8月17号正式离职，离职的原因并不想多说。再回头看码云，所有的commit都变成了一个个的绿格子。 离职以后，我想着要写一篇工作总结。一开始入职的时候，我们是在做一个纺织公司的后台管理系统，后来又在做体育培训管理解决方案。都是基于Jeecg-boot这个框架，Jeecg-boot又是">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://gsnwjd.github.io/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/my.png">
+<meta property="og:image" content="https://gsnwjd.github.io/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/select.png">
+<meta property="og:image" content="https://gsnwjd.github.io/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/forms.png">
+<meta property="og:image" content="https://gsnwjd.github.io/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/forms2.png">
+<meta property="og:updated_time" content="2021-12-26T04:59:10.160Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="打印，表单，富文本编辑器（踩坑记录）">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;——本文禁止转载,分享请注明网站出处: ） 6月14号的时候来到上海，6月25号入职敦汐，到8月17号正式离职，离职的原因并不想多说。再回头看码云，所有的commit都变成了一个个的绿格子。 离职以后，我想着要写一篇工作总结。一开始入职的时候，我们是在做一个纺织公司的后台管理系统，后来又在做体育培训管理解决方案。都是基于Jeecg-boot这个框架，Jeecg-boot又是">
+<meta name="twitter:image" content="https://gsnwjd.github.io/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/my.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://gsnwjd.github.io/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>打印，表单，富文本编辑器（踩坑记录） | 关四鸟</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">关四鸟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">——王佳典的漫漫coding之旅</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://gsnwjd.github.io/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gsnwjd王佳典">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="关四鸟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">打印，表单，富文本编辑器（踩坑记录）
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-08-22 13:30:38" itemprop="dateCreated datePublished" datetime="2020-08-22T13:30:38Z">2020-08-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-12-26 04:59:10" itemprop="dateModified" datetime="2021-12-26T04:59:10Z">2021-12-26</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><span style="color:#8c8c8c;border-left:4px solid #759477;">&nbsp;&nbsp;——本文禁止转载,分享请注明网站出处: ）</span><br></p>
+<p>6月14号的时候来到上海，6月25号入职敦汐，到8月17号正式离职，离职的原因并不想多说。再回头看码云，所有的commit都变成了一个个的绿格子。</p>
+<p><img src="/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/my.png" alt="码云个人主页">离职以后，我想着要写一篇工作总结。<br><br>一开始入职的时候，我们是在做一个纺织公司的后台管理系统，后来又在做体育培训管理解决方案。都是基于Jeecg-boot这个框架，Jeecg-boot又是基于Antd和SpringBoot，其中我主要负责打印功能的实现，例如合同和送货单的打印，还有一些其他功能的实现，但是并不是所有细枝末节都值得被记录，以下会记录一些真正让我有收获的知识点。</p><p style="color:#59755e;font-weight:bold;font-size:20px;height:40px;padding-top: 15px;">打印</p><br><span style="color:rgb(191, 201, 99);font-size:15px;">“所有一切基于vue-print-nb”,v-print=打印区域的ID</span><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//main.js</span><br><span class="line">    import Print from &apos;vue-print-nb-jeecg&apos;</span><br><span class="line">    Vue.use(Print)</span><br><span class="line">    </span><br><span class="line">    //***.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;Print&quot;&gt;</span><br><span class="line">    &lt;a-button type=&quot;primary&quot; @click=&quot;dataColl&quot; icon=&quot;printer&quot;&gt;打印&lt;/a-button&gt;</span><br><span class="line">    &lt;a-modal v-model=&quot;visible&quot; title=&quot;打印预览&quot; on-ok=&quot;handleOk&quot; :width=&quot;width&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;ContractPrint&quot; id=&quot;printerDemo2&quot;&gt;</span><br><span class="line">      此处放打印内容</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;template slot=&quot;footer&quot;&gt;</span><br><span class="line">        &lt;a-button key=&quot;back&quot; @click=&quot;handleCancel&quot;&gt;取消&lt;/a-button&gt;</span><br><span class="line">        &lt;a-button</span><br><span class="line">          key=&quot;submit&quot;</span><br><span class="line">          type=&quot;primary&quot;</span><br><span class="line">          :loading=&quot;loading&quot;</span><br><span class="line">          @click=&quot;handleOk&quot;</span><br><span class="line">          v-print=&quot;&apos;#printerDemo2&apos;&quot;</span><br><span class="line">        &gt;确认&lt;/a-button&gt;</span><br><span class="line">      &lt;/template&gt;</span><br><span class="line">    &lt;/a-modal&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure><p></p>
+<p style="color:#91a76e;font-weight:bold">去掉边角水印</p>firefox调用打印的时候会产生难看的水印，直接调用打印方法会在生成的pdf上面出现“page1”，网址。可能在页头，或者页尾,我们需要在style里加上以下代码，去掉水印。同时为了美观我们可以加上padding。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@media print &#123;</span><br><span class="line">  @page &#123;</span><br><span class="line">    size: auto;</span><br><span class="line">    margin: 0mm;</span><br><span class="line">  &#125;</span><br><span class="line">  #printerDemo2&#123;</span><br><span class="line">    padding:30px;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p style="color:#91a76e;font-weight:bold">打印出正常的A4</p>想要正好是A4纸张大小，其实只需要长:宽 约等于<span style="color:#949e72;">297/210</span>，但是建议正常打印的时候这个比例要小一点，要不然打印还是有可能跳到下一页，但是由于打印的时候很多在style里写的css会失效，最起码我在打印原生table的时候table的格子就全部挤到左边，其实在预览的时候它们都是好好的。所以要么写成内嵌style的样子，要么用flex+div，或者直接用antd所自带的栅格来写，这样最后结果pdf才可能和预览的时候一样。<br><br>顺便说一下，由于vue-printer-nb应该是进行canvas绘图之后打印canvas，所以只要比例ok，它会把所有内容塞到一张A4纸上。想要换页，只能进行设置。<p style="color:#91a76e;font-weight:bold">换页</p>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.break &#123;</span><br><span class="line">  page-break-before: auto;</span><br><span class="line">  page-break-after: always;</span><br><span class="line">&#125;</span><br><span class="line">.nobreak&#123;</span><br><span class="line">  page-break-after:avoid;</span><br><span class="line">&#125;</span><br><span class="line">.one_Page&#123;</span><br><span class="line">  height: 1130px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;a4_page&quot; :class=&quot;&#123;break:data_now.length&gt;120,one_Page:data_now.length&gt;120&#125;&quot;&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>实际情况比以上的代码复杂一丢丢，为了好理解简化成上面那一段。不过也可以很清楚地看到如果要分页，就绑定一个.break类。<br>其他排版什么的都需要根据实际情况调整。</p><p style="color:#59755e;font-weight:bold;font-size:20px;height:40px;padding-top: 15px;">Id to Name</p><br>由于是后台管理系统，所以基础逻辑都是对数据表的增删改查，Jeecg-boot对于基础的增删改查全部写好了，利用Antd的<span style="color:rgb(96, 156, 146);font-style:italic;font-weight: bolder;">a-table</span><br>都绑定数据名为dataSource的dataSource,在组件里引入mixin，在mixin里写方法调用接口进行增删改查和批量删除。<br>由于数据表存放了大量的Id，Id与Id之间关联，例如品牌的数据表里需要存放一个场馆Id，在页面上显示Id，只会让操作的人一头雾水，所以必须以Id存储，以name显示。<br>所以我在已经封装好的mixin里又写了封装。（其实这个应该后端来做，接口调太多是不是不太好？）<br><span style="color:rgb(60, 182, 121);font-style:italic;font-weight: bolder;">原来的mixin</span><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">loadData(arg) &#123;</span><br><span class="line">  if(!this.url.list)&#123;</span><br><span class="line">    this.$message.error(&quot;请设置url.list属性!&quot;)</span><br><span class="line">    return</span><br><span class="line">  &#125;</span><br><span class="line">  //加载数据 若传入参数1则加载第一页的内容</span><br><span class="line">  if (arg === 1) &#123;</span><br><span class="line">    this.ipagination.current = 1;</span><br><span class="line">  &#125;</span><br><span class="line">  var params = this.getQueryParams();//查询条件</span><br><span class="line">  this.loading = true;</span><br><span class="line">  getAction(this.url.list, params).then((res) =&gt; &#123;</span><br><span class="line">    if (res.success) &#123;</span><br><span class="line">      this.dataSource = res.result.records;</span><br><span class="line">      this.ipagination.total = res.result.total;</span><br><span class="line">    &#125;</span><br><span class="line">    if(res.code===510)&#123;</span><br><span class="line">      this.$message.warning(res.message)</span><br><span class="line">    &#125;</span><br><span class="line">    this.loading = false;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure><span style="color:rgb(60, 182, 121);font-style:italic;font-weight: bolder;">修改之后的mixin</span><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">loadData(arg) &#123;</span><br><span class="line">  if(!this.url.list)&#123;</span><br><span class="line">    this.$message.error(&quot;请设置url.list属性!&quot;)</span><br><span class="line">    return</span><br><span class="line">  &#125;</span><br><span class="line">  //加载数据 若传入参数1则加载第一页的内容</span><br><span class="line">  if (arg === 1) &#123;</span><br><span class="line">    this.ipagination.current = 1;</span><br><span class="line">  &#125;</span><br><span class="line">  var params = this.getQueryParams();//查询条件</span><br><span class="line">  this.loading = true;</span><br><span class="line">  getAction(this.url.list, params).then((res) =&gt; &#123;</span><br><span class="line">    if (res.success) &#123;</span><br><span class="line">      this.dataSource = res.result.records;</span><br><span class="line">      let obj = this.dataSource[0]</span><br><span class="line">      let boolean_arr = []</span><br><span class="line">      for(let idx in obj)&#123;</span><br><span class="line">        boolean_arr.push(idx)</span><br><span class="line">      &#125;</span><br><span class="line">      let arr_all = boolean_arr.join(&quot;.&quot;)</span><br><span class="line">      if(this.url.idToName)&#123;</span><br><span class="line">      //有就转换，没有就不转换</span><br><span class="line">        this.url.idToName.map((item)=&gt;&#123;</span><br><span class="line"></span><br><span class="line">          if(arr_all.indexOf(item.id)&gt;0)&#123;//此表是否能找到此Id</span><br><span class="line">            let pro = item.id</span><br><span class="line">            let tourl = item.tourl</span><br><span class="line">            let props = pro+&apos;_toname&apos;</span><br><span class="line">            let name = item.name</span><br><span class="line">            let str = &apos;&apos;</span><br><span class="line">            this.dataSource.map((item)=&gt;&#123;</span><br><span class="line">              let val = item[pro]</span><br><span class="line">              if(val)&#123;</span><br><span class="line">                getAction(`$&#123;tourl&#125;?id=$&#123;val&#125;`).then((res)=&gt;&#123;</span><br><span class="line">                  if(res.success)&#123;</span><br><span class="line">                    let obj = res.result.records ? res.result.records[0] : []</span><br><span class="line">                    str = obj[name]</span><br><span class="line">                  &#125;</span><br><span class="line">                  this.$set(item,`$&#123;props&#125;`,str)</span><br><span class="line">                  //此处给dataSource加列需要使用.$set方法，否则无法修改视图层</span><br><span class="line">                &#125;)</span><br><span class="line">              &#125;else&#123;</span><br><span class="line">                console.log(&apos;此格为空&apos;)</span><br><span class="line">                this.$set(item,`$&#123;props&#125;`,&apos;无&apos;)</span><br><span class="line">              &#125;</span><br><span class="line">              // console.log(item)</span><br><span class="line">              return item</span><br><span class="line">            &#125;)&#125;else&#123;</span><br><span class="line">              console.log(&apos;此表不存在此id&apos;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">      // console.log(this.dataSource)</span><br><span class="line">      this.ipagination.total = res.result.total;</span><br><span class="line">    &#125;</span><br><span class="line">    if(res.code===510)&#123;</span><br><span class="line">      this.$message.warning(res.message)</span><br><span class="line">    &#125;</span><br><span class="line">    this.loading = false;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;,</span><br><span class="line">  </span><br></pre></td></tr></table></figure>如果需要使用的话，vue页面里需要这么改<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">table绑定的columns里一个列可以直接加</span><br><span class="line">&#123;</span><br><span class="line">  title:&apos;父团队ID&apos;,</span><br><span class="line">  align:&quot;center&quot;,</span><br><span class="line">  dataIndex: &apos;storeFatherId&apos;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">=&gt;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  title:&apos;父团队ID&apos;,</span><br><span class="line">  align:&quot;center&quot;,</span><br><span class="line">  dataIndex: &apos;storeFatherId_toname&apos;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">data里定义的url也需要</span><br><span class="line">url: &#123;</span><br><span class="line">  list: &quot;/basic/sportsStoreInfo/list&quot;,</span><br><span class="line">  delete: &quot;/basic/sportsStoreInfo/delete&quot;,</span><br><span class="line">  deleteBatch: &quot;/basic/sportsStoreInfo/deleteBatch&quot;,</span><br><span class="line">  exportXlsUrl: &quot;/basic/sportsStoreInfo/exportXls&quot;,</span><br><span class="line">  importExcelUrl: &quot;basic/sportsStoreInfo/importExcel&quot;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">=&gt;</span><br><span class="line"></span><br><span class="line">url: &#123;</span><br><span class="line">  list: &quot;/basic/sportsStoreInfo/list&quot;,</span><br><span class="line">  delete: &quot;/basic/sportsStoreInfo/delete&quot;,</span><br><span class="line">  deleteBatch: &quot;/basic/sportsStoreInfo/deleteBatch&quot;,</span><br><span class="line">  exportXlsUrl: &quot;/basic/sportsStoreInfo/exportXls&quot;,</span><br><span class="line">  importExcelUrl: &quot;basic/sportsStoreInfo/importExcel&quot;,</span><br><span class="line">  </span><br><span class="line">  idToName:[&#123;</span><br><span class="line">    id:&apos;storeFatherId&apos;,//A表数据Id(本张表数据Id)</span><br><span class="line">    name:&apos;teamName&apos;,//B表数据名称</span><br><span class="line">    tourl:&quot;/basic/sportsTeamInfo/list&quot;//B表数据URL</span><br><span class="line">  &#125;],</span><br><span class="line">&#125;,</span><br><span class="line"></span><br></pre></td></tr></table></figure><p></p>
+<p></p><p style="color:#59755e;font-weight:bold;font-size:20px;height:40px;padding-top: 15px;">Jeecg-boot的选框(存在数据依赖)</p>其实这个解释起来会有一丢丢的复杂，具体modal如下图。<img src="/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/select.png" alt="码云个人主页">这里面的每一个选框需要加载出来的数据在父modal跳出的时候就已经加载完成，如果我们点击选择按钮，出现子modal,子modal加载出的数据表的数据，我们是无法去修改的。别问为什么父传子传值很简单，的确，是很简单。但是当数据如下传递<br><span style="color:rgb(89, 146, 106);font-size:15px;">SportsCardInfoModal.vue-&gt;JSelectBrand.vue/<em>此处开始传参到封装</em>/-&gt;JSelectBizComponent/index.vue-&gt;JSelectBizComponent/JSelectBizComponent.vue(此处为数据源真正显示的地方)</span>每一层都是用prop传的值，所以也就意味着父亲可以命令儿子，但是曾曾祖父没办法命令曾曾孙子。（puchi）<br>当我们选择场馆，希望通过返回的场馆的id值去过滤与此场馆id关联的品牌，当我们希望能够选择的邀约班级要根据以上场馆id，品牌id，到馆时间是星期几（大部分班级一周只上一节课，所以有星期几的筛选）进行筛选的时候，我们就很难用这个封装完全的组件去做了。毕竟它只能显示数据源-&gt;选择一条-&gt;返回id。<br>用封装太过的框架就会这样，当我们要写逻辑性比较强的功能的时候，就会陷入到底是应该重写一个轮子（这个是轮子吗？），还是用其他方法的困境，最后，我还是选择去适应这个轮子。<br><br>在app.js里的state定义一个全局的空数组为detail，写一个push的方法，写一个清空的方法(actions,mutations里都要写)<br>以下是简化的代码。<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--给页面的选框绑定方法，传值--&gt;</span><br><span class="line">   &lt;a-form-item label=&quot;邀约场馆&quot; :labelCol=&quot;labelCol&quot; :wrapperCol=&quot;wrapperCol&quot;&gt;</span><br><span class="line">     &lt;j-select-venu  v-decorator=&quot;[&apos;venueId&apos; ,validatorRules.venueId]&quot; :multiple=&quot;false&quot; placeholder=&quot;请输入邀约场馆&quot; @change=&quot;getVId&quot; /&gt;</span><br><span class="line">   &lt;/a-form-item&gt;</span><br><span class="line">   &lt;a-form-item label=&quot;邀约品牌&quot; :labelCol=&quot;labelCol&quot; :wrapperCol=&quot;wrapperCol&quot;&gt;</span><br><span class="line">     &lt;j-select-brand-rely v-decorator=&quot;[&apos;brandId&apos;, validatorRules.brandId]&quot; placeholder=&quot;请输入邀约品牌&quot; @change=&quot;getBId&quot;</span><br><span class="line">     :multiple=&quot;false&quot;/&gt;</span><br><span class="line">   &lt;/a-form-item&gt;</span><br><span class="line">   &lt;a-form-item label=&quot;邀约到馆时间&quot; :labelCol=&quot;labelCol&quot; :wrapperCol=&quot;wrapperCol&quot;&gt;</span><br><span class="line">     &lt;a-date-picker</span><br><span class="line">       placeholder=&quot;请选择邀约到馆时间&quot;</span><br><span class="line">       @change=&quot;getweek&quot;</span><br><span class="line">       :triggerChange=&quot;true&quot; </span><br><span class="line">       v-decorator=&quot;[&apos;offerTime&apos;, validatorRules.offerTime]&quot;</span><br><span class="line">       show-time</span><br><span class="line">       format=&quot;YYYY-MM-DD HH:mm&quot;</span><br><span class="line">       style=&quot;width: 100%&quot;</span><br><span class="line">     /&gt;</span><br><span class="line">   &lt;/a-form-item&gt;</span><br><span class="line">   &lt;a-form-item label=&quot;邀约班级&quot; :labelCol=&quot;labelCol&quot; :wrapperCol=&quot;wrapperCol&quot;&gt;</span><br><span class="line">     &lt;j-select-class-rely v-decorator=&quot;[&apos;classManagerId&apos;]&quot; </span><br><span class="line">       placeholder=&quot;请输入邀约班级&quot;</span><br><span class="line">       :disabled=&quot; ! ( hadChoose1 &amp;&amp; hadChoose2 &amp;&amp; hadChoose3 ) &quot;</span><br><span class="line">       :multiple=&quot;false&quot;/&gt;</span><br><span class="line">   &lt;/a-form-item&gt;</span><br><span class="line">   </span><br><span class="line">   methods:&#123;//绑定方法，利用vuex在平行组件之间传参</span><br><span class="line">   getweek(e)&#123;</span><br><span class="line">     e = `$&#123;this.moment(e).day()&#125;`</span><br><span class="line">     this.$store.commit(&apos;GetDetail&apos;,&apos;dayWeek&apos;)</span><br><span class="line">     this.$store.commit(&apos;GetDetail&apos;, e)</span><br><span class="line">     this.hadChoose1 = true</span><br><span class="line">   &#125;,</span><br><span class="line">   getVId(e)&#123;</span><br><span class="line">     this.$store.commit(&apos;GetDetail&apos;,&apos;corresVenues&apos;)</span><br><span class="line">     this.$store.commit(&apos;GetDetail&apos;, e)</span><br><span class="line"></span><br><span class="line">     this.$store.commit(&apos;GetDetail&apos;,&apos;venueId&apos;)</span><br><span class="line">     this.$store.commit(&apos;GetDetail&apos;, e)</span><br><span class="line"></span><br><span class="line">     this.hadChoose2 = true</span><br><span class="line">   &#125;,</span><br><span class="line">   getBId(e)&#123;</span><br><span class="line">     this.$store.commit(&apos;GetDetail&apos;,&apos;brand&apos;)</span><br><span class="line">     this.$store.commit(&apos;GetDetail&apos;, e)</span><br><span class="line">     this.hadChoose3 = true</span><br><span class="line">     // this.$set(this.rely,&apos;BId&apos;,e)</span><br><span class="line">   &#125;,</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>我们将轮子复制出一层，为JSelectBizComponentDetail<br>我们在JSelectBizComponentDetail/JSelectBizComponent.vue的computed里写好如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">Rely()&#123;</span><br><span class="line">  let arr = this.$store.getters.detail</span><br><span class="line">  let arr_o = arr.filter((item,index)=&gt;&#123;</span><br><span class="line">    return index%2 === 0</span><br><span class="line">  &#125;)</span><br><span class="line">  let arr_j = arr.filter((item,index)=&gt;&#123;</span><br><span class="line">    return index%2 != 0</span><br><span class="line">  &#125;)</span><br><span class="line">  let rely = arr_o.map((item,index)=&gt;&#123;</span><br><span class="line">    let val = arr_j[index]</span><br><span class="line">    return&#123;</span><br><span class="line">      name:item,</span><br><span class="line">      val:val</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  //rely从[&apos;venueId&apos;,&apos;12334444564444&apos;]变成了[&#123;name:&apos;venueId&apos;,val:&apos;12334444564444&apos;&#125;]</span><br><span class="line">  rely = rely.reverse()//倒序是因为之前用的push方法，最后选择的放在了末尾，末尾的数据反而是需要筛选的数据。</span><br><span class="line">  let arr3 = []</span><br><span class="line">  rely = rely.reduce((item, next) =&gt; &#123;</span><br><span class="line">    if(arr3.indexOf(next.name) === -1)&#123;</span><br><span class="line">      item.push(next)</span><br><span class="line">      arr3.push(next.name)//以最终选择略过之前的选择</span><br><span class="line">    &#125;</span><br><span class="line">    return item;</span><br><span class="line">  &#125;, []);</span><br><span class="line">  return rely</span><br><span class="line">&#125;,</span><br><span class="line">Column_bool()&#123;</span><br><span class="line">  let obj = this.dataSource[0]</span><br><span class="line">  let arr = []</span><br><span class="line">  for(let idx in obj)&#123;</span><br><span class="line">    arr.push(idx)</span><br><span class="line">  &#125;</span><br><span class="line">  let str = arr.join(&apos;.&apos;)</span><br><span class="line">  //依然是判断datasource的json对象里有无这个id</span><br><span class="line">  return str</span><br><span class="line">&#125;,</span><br><span class="line">dataS()&#123;//a-table不再绑定dataSource，而是dataS</span><br><span class="line">  let bol = this.Column_bool</span><br><span class="line">  let rely = this.Rely</span><br><span class="line">  if(rely)&#123;</span><br><span class="line">    let arr = this.dataSource</span><br><span class="line">    rely.map((item)=&gt;&#123;</span><br><span class="line">      let name = item.name</span><br><span class="line">      let val = item.val</span><br><span class="line">      if(bol.indexOf(name)&gt;0)&#123;</span><br><span class="line">      arr = arr.filter((item)=&gt;&#123; return item[name] === val &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    return arr</span><br><span class="line">  &#125;else&#123;</span><br><span class="line">    return this.dataSource</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure><br>最后一步:<br><span style="font-weight:bold;font-style:italic;color:#5f9296;">我们需要监听父modal的visible,visible为false的时候，我们需要清空detail</span><br>这个代码这里就不多赘述了。<p style="color:#59755e;font-weight:bold;font-size:20px;height:40px;padding-top: 15px;">表单内嵌子表单，完成增删改查</p>大体如下：<p></p>
+<p><img src="/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/forms.png" alt="码云个人主页">点击父表单的某一条记录的编辑的时候又变成这样，即关联的子表单记录能够显示，编辑，新增，删除。</p>
+<p><img src="/2020/08/22/6-7-8工作总结（say-goodbye-to-dunxi）/forms2.png" alt="码云个人主页"><br>这个modal的代码是我修改样例得到的，加了一些具体的方法，同时因为工艺流程和另外一列都要用到数据字典，需要单独写。这里记录一下具体代码。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br></pre></td><td class="code"><pre><span class="line">//内嵌的表单</span><br><span class="line">&lt;a-row :gutter=&quot;[24,8]&quot;&gt;</span><br><span class="line">  &lt;a-col :span=&quot;24&quot;&gt;</span><br><span class="line">    &lt;a-table :columns=&quot;columns&quot; :dataSource=&quot;dataProinfo&quot; :pagination=&quot;false&quot; size=&quot;small&quot;&gt;</span><br><span class="line">      &lt;template slot=&quot;processFlow&quot; slot-scope=&quot;text, record&quot;&gt;</span><br><span class="line">        &lt;j-dict-select-tag</span><br><span class="line">          :triggerChange=&quot;true&quot;</span><br><span class="line">          key=&quot;processFlow&quot;</span><br><span class="line">          v-if=&quot;record.editable&quot;</span><br><span class="line">          style=&quot;margin: -5px 0&quot;</span><br><span class="line">          :value=&quot;record.processFlow&quot;</span><br><span class="line">          :select=&quot;&apos;radio&apos;&quot;</span><br><span class="line">          dictCode=&quot;processRecordFlow&quot;</span><br><span class="line">          @change=&quot;e =&gt; handleChange(e, record.key, `processFlow`)&quot;</span><br><span class="line">          placeholder=&quot;请输入工艺流程&quot;</span><br><span class="line">        /&gt;</span><br><span class="line">        &lt;template v-else&gt;&lt;/template&gt;</span><br><span class="line">      &lt;/template&gt;</span><br><span class="line">      &lt;template slot=&quot;processTime&quot; slot-scope=&quot;text, record&quot;&gt;</span><br><span class="line">        &lt;j-date</span><br><span class="line">          :trigger-change=&quot;true&quot;</span><br><span class="line">          key=&quot;processTime&quot;</span><br><span class="line">          v-if=&quot;record.editable&quot;</span><br><span class="line">          style=&quot;margin: -5px 0&quot;</span><br><span class="line">          :value=&quot;text&quot;</span><br><span class="line">          placeholder=&quot;日期&quot;</span><br><span class="line">          @change=&quot;e =&gt; handleChange(e, record.key, &apos;processTime&apos;)&quot;</span><br><span class="line">        /&gt;</span><br><span class="line">        &lt;template v-else&gt;&lt;/template&gt;</span><br><span class="line">      &lt;/template&gt;</span><br><span class="line">      &lt;template</span><br><span class="line">        v-for=&quot;(col, i) in [&apos;vehicleNumber&apos;,&apos;machineNumber&apos;,&apos;comment&apos;]&quot;</span><br><span class="line">        :slot=&quot;col&quot;</span><br><span class="line">        slot-scope=&quot;text, record&quot;</span><br><span class="line">      &gt;</span><br><span class="line">        &lt;a-input</span><br><span class="line">          :key=&quot;col&quot;</span><br><span class="line">          v-if=&quot;record.editable&quot;</span><br><span class="line">          style=&quot;margin: -5px 0&quot;</span><br><span class="line">          :value=&quot;text&quot;</span><br><span class="line">          :placeholder=&quot;columns.slice(2)[i].title&quot;</span><br><span class="line">          @change=&quot;e =&gt; handleChange(e.target.value, record.key, col)&quot;</span><br><span class="line">        /&gt;</span><br><span class="line">        &lt;template v-else&gt;&lt;/template&gt;</span><br><span class="line">      &lt;/template&gt;</span><br><span class="line">      &lt;template slot=&quot;operation&quot; slot-scope=&quot;text, record&quot;&gt;</span><br><span class="line">        &lt;template v-if=&quot;record.editable&quot;&gt;</span><br><span class="line">          &lt;span v-if=&quot;record.isNew&quot;&gt;</span><br><span class="line">            &lt;a @click=&quot;saveRow(record.key)&quot;&gt;添加&lt;/a&gt;</span><br><span class="line">            &lt;a-divider type=&quot;vertical&quot; /&gt;</span><br><span class="line">            &lt;a-popconfirm title=&quot;是否要删除此行？&quot; @confirm=&quot;remove(record.key)&quot;&gt;</span><br><span class="line">              &lt;a&gt;删除&lt;/a&gt;</span><br><span class="line">            &lt;/a-popconfirm&gt;</span><br><span class="line">          &lt;/span&gt;</span><br><span class="line">          &lt;span v-else&gt;</span><br><span class="line">            &lt;a @click=&quot;saveRow(record.key)&quot;&gt;保存&lt;/a&gt;</span><br><span class="line">            &lt;a-divider type=&quot;vertical&quot; /&gt;</span><br><span class="line">            &lt;a @click=&quot;cancel(record.key)&quot;&gt;取消&lt;/a&gt;</span><br><span class="line">          &lt;/span&gt;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">        &lt;span v-else&gt;</span><br><span class="line">          &lt;a @click=&quot;toggle(record.key)&quot;&gt;编辑&lt;/a&gt;</span><br><span class="line">          &lt;a-divider type=&quot;vertical&quot; /&gt;</span><br><span class="line">          &lt;a-popconfirm title=&quot;是否要删除此行？&quot; @confirm=&quot;remove(record.key)&quot;&gt;</span><br><span class="line">            &lt;a&gt;删除&lt;/a&gt;</span><br><span class="line">          &lt;/a-popconfirm&gt;</span><br><span class="line">        &lt;/span&gt;</span><br><span class="line">      &lt;/template&gt;</span><br><span class="line">    &lt;/a-table&gt;</span><br><span class="line">    &lt;a-button</span><br><span class="line">      style=&quot;width: 100%; margin-top: 16px; margin-bottom: 8px&quot;</span><br><span class="line">      type=&quot;dashed&quot;</span><br><span class="line">      icon=&quot;plus&quot;</span><br><span class="line">      @click=&quot;newMember&quot;</span><br><span class="line">    &gt;新增工艺流程&lt;/a-button&gt;</span><br><span class="line">  &lt;/a-col&gt;</span><br><span class="line">&lt;/a-row&gt;</span><br><span class="line"></span><br><span class="line">data() &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    processFlow: [&apos;配布&apos;, &apos;退布&apos;, &apos;预定&apos;, &apos;染色&apos;, &apos;脱水&apos;, &apos;剖布&apos;, &apos;理布&apos;, &apos;定型&apos;, &apos;打卷&apos;, &apos;入库&apos;],</span><br><span class="line">    dataProinfo:[],</span><br><span class="line">    columns: [</span><br><span class="line">      &#123;</span><br><span class="line">        title: &apos;工艺流程&apos;,</span><br><span class="line">        align: &apos;center&apos;,</span><br><span class="line">        width: &apos;15%&apos;,</span><br><span class="line">        dataIndex: &apos;processFlow&apos;,</span><br><span class="line">        scopedSlots: &#123; customRender: &apos;processFlow&apos; &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        title: &apos;日期&apos;,</span><br><span class="line">        align: &apos;center&apos;,</span><br><span class="line">        width: &apos;18%&apos;,</span><br><span class="line">        dataIndex: &apos;processTime&apos;,</span><br><span class="line">        scopedSlots: &#123; customRender: &apos;processTime&apos; &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        title: &apos;车号&apos;,</span><br><span class="line">        align: &apos;center&apos;,</span><br><span class="line">        width: &apos;20%&apos;,</span><br><span class="line">        dataIndex: &apos;vehicleNumber&apos;,</span><br><span class="line">        scopedSlots: &#123; customRender: &apos;vehicleNumber&apos; &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        title: &apos;机台号&apos;,</span><br><span class="line">        align: &apos;center&apos;,</span><br><span class="line">        width: &apos;20%&apos;,</span><br><span class="line">        dataIndex: &apos;machineNumber&apos;,</span><br><span class="line">        scopedSlots: &#123; customRender: &apos;machineNumber&apos; &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        title: &apos;备注&apos;,</span><br><span class="line">        align: &apos;center&apos;,</span><br><span class="line">        width: &apos;10%&apos;,</span><br><span class="line">        dataIndex: &apos;comment&apos;,</span><br><span class="line">        scopedSlots: &#123; customRender: &apos;comment&apos; &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        title: &apos;操作&apos;,</span><br><span class="line">        key: &apos;action&apos;,</span><br><span class="line">        align: &apos;center&apos;,</span><br><span class="line">        scopedSlots: &#123; customRender: &apos;operation&apos; &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;,</span><br><span class="line"></span><br><span class="line">methods:&#123;</span><br><span class="line">  //内嵌表单所用的方法</span><br><span class="line">  newMember() &#123;</span><br><span class="line">    this.dataProinfo.push(&#123;</span><br><span class="line">      key: Math.random().toString().slice(3, 8),</span><br><span class="line">      processFlow: &apos;&apos;,</span><br><span class="line">      processTime: &apos;&apos;,</span><br><span class="line">      vehicleNumber: &apos;&apos;,</span><br><span class="line">      machineNumber: &apos;&apos;,</span><br><span class="line">      editable: true,</span><br><span class="line">      comment: &apos;&apos;,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  remove(key) &#123;</span><br><span class="line">    //如果要删除就直接删除</span><br><span class="line">    const newData = this.dataProinfo.filter((item) =&gt; item.key !== key)</span><br><span class="line">    const removeId = this.dataProinfo.filter((item) =&gt; item.key === key)[0].id</span><br><span class="line">    this.dataProinfo = newData</span><br><span class="line">    if (removeId) &#123;</span><br><span class="line">      deleteAction(`/production/fabricProcessRecordInfo/delete?id=$&#123;removeId&#125;`).then((res) =&gt; &#123;</span><br><span class="line">        if (res.success) &#123;</span><br><span class="line">          // this.ProinfoGet()</span><br><span class="line">          console.log(`$&#123;removeId&#125;删除成功`)</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          console.log(`$&#123;removeId&#125;删除失败`)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  saveRow(key) &#123;</span><br><span class="line">    let target = this.dataProinfo.filter((item) =&gt; item.key === key)[0]</span><br><span class="line">    target.editable = false</span><br><span class="line">    target.isNew = false</span><br><span class="line">  &#125;,</span><br><span class="line">  toggle(key) &#123;</span><br><span class="line">    let target = this.dataProinfo.filter((item) =&gt; item.key === key)[0]</span><br><span class="line">    target.editable = !target.editable</span><br><span class="line">  &#125;,</span><br><span class="line">  getRowByKey(key, newData) &#123;</span><br><span class="line">    const data = this.dataProinfo</span><br><span class="line">    return (newData || data).filter((item) =&gt; item.key === key)[0]</span><br><span class="line">  &#125;,</span><br><span class="line">  cancel(key) &#123;</span><br><span class="line">    let target = this.dataProinfo.filter((item) =&gt; item.key === key)[0]</span><br><span class="line">    target.editable = false</span><br><span class="line">  &#125;,</span><br><span class="line">  handleChange(value, key, column) &#123;</span><br><span class="line">    const newData = [...this.dataProinfo]</span><br><span class="line">    const target = newData.filter((item) =&gt; key === item.key)[0]</span><br><span class="line">    if (target) &#123;</span><br><span class="line">      target[column] = value</span><br><span class="line">      this.dataProinfo = newData</span><br><span class="line">    &#125;</span><br><span class="line">    console.log(this.dataProinfo)</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  ProinfoGet() &#123;</span><br><span class="line">    let pro_id = this.model.productionNo//父记录的生产单号，关联出子记录的工艺流程</span><br><span class="line">    if(pro_id)&#123;</span><br><span class="line">      getAction(`/production/fabricProcessRecordInfo/list?productionNo=$&#123;pro_id&#125;`).then((res) =&gt; &#123;</span><br><span class="line">        if (res.success) &#123;</span><br><span class="line">          this.dataProinfo = res.result.records.map((item)=&gt;&#123;</span><br><span class="line">              return&#123;</span><br><span class="line">                ...item,</span><br><span class="line">                key:Math.random().toString().slice(3,8),</span><br><span class="line">                editable:false</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;)</span><br><span class="line">          console.log(`$&#123;pro_id&#125;加载成功`)</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          console.log(`$&#123;pro_id&#125;加载失败`)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  ProinfoPost() &#123;</span><br><span class="line">    let pro_id = this.model.productionNo</span><br><span class="line">    if (this.dataProinfo.length) &#123;</span><br><span class="line">      //需要编辑的数据</span><br><span class="line">      let datas = this.dataProinfo.filter((item) =&gt; &#123;</span><br><span class="line">        return item.id</span><br><span class="line">      &#125;)</span><br><span class="line"></span><br><span class="line">      //需要新增的数据</span><br><span class="line">      let datas2 = this.dataProinfo.filter((item) =&gt; &#123;</span><br><span class="line">        return !item.id</span><br><span class="line">      &#125;)</span><br><span class="line">      let newData2 = datas2.map((item) =&gt; &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">          productionNo: pro_id,</span><br><span class="line">          processFlow: item.processFlow,</span><br><span class="line">          processTime: item.processTime,</span><br><span class="line">          vehicleNumber: item.vehicleNumber,</span><br><span class="line">          machineNumber: item.machineNumber,</span><br><span class="line">          comment: item.comment,</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">  </span><br><span class="line">      for (let i in newData2) &#123;</span><br><span class="line">        postAction(`/production/fabricProcessRecordInfo/add`, newData2[i]).then((res) =&gt; &#123;</span><br><span class="line">          if (res.success) &#123;</span><br><span class="line">            console.log(i + &apos;ok&apos;)</span><br><span class="line">          &#125; else &#123;</span><br><span class="line">            console.log(i + &apos;no&apos;)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">  </span><br><span class="line">      for (let i in datas) &#123;</span><br><span class="line">        console.log(datas[i])</span><br><span class="line">        putAction(`/production/fabricProcessRecordInfo/edit`, datas[i]).then((res) =&gt; &#123;</span><br><span class="line">          if (res.success) &#123;</span><br><span class="line">            console.log(i + &apos;ok&apos;)</span><br><span class="line">          &#125; else &#123;</span><br><span class="line">            console.log(i + &apos;no&apos;)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"> </span><br></pre></td></tr></table></figure><br>以上只是那个页面的一半，另一半就是Jeecg-boot已经封装好的增删改查，没有记录意义。</p><p style="color:#59755e;font-weight:bold;font-size:20px;height:40px;padding-top: 15px;">Base64（Blob转Base64）</p><p style="color:#91a76e;font-weight:bold">富文本编辑器的坑</p>如果想以base64编码转换图片存入数据库的话，需要用到canvas绘图。（说实话canvas我一直没学，因为会svg所以觉得没必要学，也许有一天会纳入我的学习路线吧）这些方法都是查找CSDN得来的，只是我使用到Jeecg-boot里费了好大一番功夫。由于全是我写的，所以直接PO上完整Vue    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;a-button icon=&quot;plus&quot; @click=&quot;addNote&quot;&gt;新增&lt;/a-button&gt;</span><br><span class="line">    &lt;a-modal v-model=&quot;visible&quot; on-ok=&quot;handleOk&quot; :width=&quot;width&quot;&gt;</span><br><span class="line">      &lt;a-spin :spinning=&quot;confirmLoading&quot;&gt;</span><br><span class="line">        &lt;a-row class=&quot;mgt&quot;&gt;</span><br><span class="line">          &lt;a-col :span=&quot;24&quot;&gt;</span><br><span class="line">            &lt;div class=&quot;ed mgt&quot;&gt;</span><br><span class="line">              &lt;a-input v-model=&quot;headline&quot;/&gt;</span><br><span class="line">              &lt;Vueditor class=&quot;editor mgt&quot; id=&quot;editor&quot; ref=&quot;content&quot;&gt;&lt;/Vueditor&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">          &lt;/a-col&gt;</span><br><span class="line">        &lt;/a-row&gt;</span><br><span class="line">      &lt;/a-spin&gt;</span><br><span class="line">      &lt;template slot=&quot;footer&quot;&gt;</span><br><span class="line">        &lt;a-button key=&quot;back&quot; @click=&quot;handleCancel&quot;&gt;取消&lt;/a-button&gt;</span><br><span class="line">        &lt;a-button key=&quot;submit&quot; :loading=&quot;loading&quot; @click=&quot;Into()&quot;&gt;确认发布&lt;/a-button&gt;</span><br><span class="line">      &lt;/template&gt;</span><br><span class="line">    &lt;/a-modal&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import &#123; postAction &#125; from &apos;@/api/manage&apos;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">        loading: false,</span><br><span class="line">        visible: false,</span><br><span class="line">        width: 900,</span><br><span class="line">        confirmLoading:false,</span><br><span class="line">        headline:&apos;&apos;,</span><br><span class="line">        simpleContent:&apos;&apos;,</span><br><span class="line">        temp:[],</span><br><span class="line">        src_img:[],</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    temp: &#123;</span><br><span class="line">      handler: function(newVal, oldVal) &#123;</span><br><span class="line">        let rel_content = &apos;&apos;;</span><br><span class="line">        let src_img = this.src_img;</span><br><span class="line">        if(newVal.length === this.src_img.length || this.temp[0] === &quot;keys&quot;)&#123;</span><br><span class="line">          rel_content = this.$refs[&apos;content&apos;].getContent()</span><br><span class="line">          for(let i in newVal)&#123;</span><br><span class="line">            rel_content = rel_content.replace(src_img[i],newVal[i])</span><br><span class="line">            //console.log(newVal[i])</span><br><span class="line">            //console.log(src_img[i])</span><br><span class="line">          &#125;</span><br><span class="line">          this.rel_content = rel_content</span><br><span class="line">          this.loading = true</span><br><span class="line">          this.sendNote()</span><br><span class="line">          this.loading = false</span><br><span class="line">          this.visible = false</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      deep: true</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    Into()&#123;</span><br><span class="line">      //图片寻找，替换，base64</span><br><span class="line">      </span><br><span class="line">      let self = this</span><br><span class="line">      let str = self.$refs[&apos;content&apos;].getContent();</span><br><span class="line">      let str2 = str</span><br><span class="line">      let imgReg = /&lt;img.*?(?:&gt;|\/&gt;)/gi;</span><br><span class="line">      //匹配src属性</span><br><span class="line">      let srcReg = /src=[\&apos;\&quot;]?([^\&apos;\&quot;]*)[\&apos;\&quot;]?/i;</span><br><span class="line">      let arr = str.match(imgReg);//拿到图片数组</span><br><span class="line">      </span><br><span class="line">      if(arr)&#123;</span><br><span class="line">        let src_s = arr.map(item=&gt;item.match(srcReg))</span><br><span class="line">        let src_img  = src_s.map(item=&gt;item[1])</span><br><span class="line">        this.src_img = src_img</span><br><span class="line">        let arr_imgs = src_img.map(item=&gt;self.getImgBase64(item))</span><br><span class="line"></span><br><span class="line">        for(let i in arr)&#123;</span><br><span class="line">        str2 = str2.replace(arr[i],&apos;&apos;)</span><br><span class="line">        &#125;</span><br><span class="line">        str2 = str2.replace(/&lt;\/?.+?&gt;/g,&quot;&quot;);</span><br><span class="line">        str2 = str2.replace(/ /g,&quot;&quot;);//为得到后的内容</span><br><span class="line">        str2 = str2.replace(/&amp;nbsp;/g,&quot;&quot;)</span><br><span class="line">        self.simpleContent = str2</span><br><span class="line"></span><br><span class="line">      &#125;else&#123;</span><br><span class="line">        this.temp.push(&quot;keys&quot;)</span><br><span class="line"></span><br><span class="line">        str2 = str2.replace(/&lt;\/?.+?&gt;/g,&quot;&quot;);</span><br><span class="line">        str2 = str2.replace(/ /g,&quot;&quot;);//dds为得到后的内容</span><br><span class="line">        str2 = str2.replace(/&amp;nbsp;/g,&quot;&quot;)</span><br><span class="line">        self.simpleContent = str2</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    async getImgBase64(url)&#123;</span><br><span class="line">        let self = this</span><br><span class="line">        let img = new Image();</span><br><span class="line">        let temp = []</span><br><span class="line">        let base64 = &apos;&apos;</span><br><span class="line">        img.src=url</span><br><span class="line">        img.onload = async function()&#123;</span><br><span class="line">          let base64 = self.image2Base64(img)</span><br><span class="line">        &#125;</span><br><span class="line">        return base64</span><br><span class="line">        //此处并没有办法返回真正的base64的流，数组为空</span><br><span class="line">    &#125;,</span><br><span class="line">    async image2Base64(img)&#123;</span><br><span class="line">        let canvas = document.createElement(&quot;canvas&quot;);</span><br><span class="line">        canvas.width = (img.width/1.5);</span><br><span class="line">        canvas.height = (img.height/1.5);</span><br><span class="line">        let ctx = canvas.getContext(&quot;2d&quot;);</span><br><span class="line">        ctx.drawImage(img, 0, 0, img.width/1.5, img.height/1.5);</span><br><span class="line">        let dataURL = await canvas.toDataURL(&quot;image/png&quot;);</span><br><span class="line">        this.temp.push(dataURL)//转换后的base64存入全局数组temp</span><br><span class="line">        return dataURL;</span><br><span class="line">    &#125;,</span><br><span class="line">    sendNote:function()&#123;</span><br><span class="line">        let content = this.rel_content</span><br><span class="line">        let headline = this.headline</span><br><span class="line">        let simpleContent = this.simpleContent</span><br><span class="line">      //let ti = moment(new Date()).format(&apos;YYYY-MM-DD&apos;)</span><br><span class="line">      console.log(simpleContent)</span><br><span class="line">      postAction(&apos;/common/fabricNotepad/add&apos;,&#123;</span><br><span class="line">          headline,</span><br><span class="line">          content,</span><br><span class="line">          simpleContent</span><br><span class="line">      &#125;).then((res) =&gt; &#123;</span><br><span class="line">          if(res.success)&#123;</span><br><span class="line">            this.$message.success(res.message)</span><br><span class="line">            this.$emit(&apos;load_aga&apos;)</span><br><span class="line">          &#125;else&#123;</span><br><span class="line">            this.$message.warning(res.message)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    addNote:function()&#123;</span><br><span class="line">      let self = this</span><br><span class="line">      this.visible = true</span><br><span class="line">      this.$refs[&quot;content&quot;].setContent(&apos;_&apos;)</span><br><span class="line">      this.headline = &apos;&apos;</span><br><span class="line">      </span><br><span class="line">    &#125;,</span><br><span class="line">    handleOk(e) &#123;</span><br><span class="line">      this.loading = true</span><br><span class="line">      setTimeout(() =&gt; &#123;</span><br><span class="line">        this.visible = false</span><br><span class="line">        this.loading = false</span><br><span class="line">      &#125;, 3000)</span><br><span class="line">    &#125;,</span><br><span class="line">    handleCancel(e) &#123;</span><br><span class="line">      this.visible = false</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">.mgt&#123;</span><br><span class="line">  margin-top: 20px;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure><br> 说实话我是第一次碰到这种情况，直接替换[‘/x.png’]为<a href="太长太长了">‘data……………’</a>的时候，替换之后Array的长度是空的（可能因为JS先传值地址，再传值？）,此处是应该写异步的，但是不知道是我能力有限还是怎样，最后只能通过别的方法去达到目的，但是转换成base64并打印在控制台完全没有问题。所以我只能去监听替换之后的数组长度。具体流程就是<br><br><span style="color:rgb(35, 112, 58);font-size:15px;">1.通过富文本编辑器Vueditor的api:getContent()拿到内容-&gt;2.然后正则查找src:xxxx,但是match到的数据会有稍微偏差，过滤拿到需要的blob-&gt;3.转换成base64流，可能因为base64文本流太长太长了，所以函数当即执行的时候，返回的是空值-&gt;4.只能存入全局数组temp-&gt;5.监听temp长度-&gt;6.temp数组长度不再变化且不为0的时候，开始着手post数据-&gt;7.为了避免无图片temp为空值的情况，temp要push一个关键字，只要temp拿到了这个关键字，说明也可以开始post了</span><p style="color:#59755e;font-weight:bold;font-size:20px;height:40px;padding-top: 15px;">其他</p><p style="color:#91a76e;font-weight:bold">map,filter以及其他</p>日常中用到了好多数组处理方法，但是大部分都是这两个api，用了好多好多遍，但是即使我已经用了这么多遍，有的时候居然还是写错了。以下简单示例：老板要求用图表形式展示占用情况，但是后端只能只返回一个大数组，数组里每一个json都有场地名称，有时间段，有占用人。具体思路如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let dataOr = names.map((item)=&gt;&#123;//names为场地名称，可以通过其他表拿到</span><br><span class="line">  let name = item</span><br><span class="line">  let arr_all = arr.filter((item)=&gt;&#123;//arr为把传过来的数组调整成时间段的格式而非小时，例如&apos;6&apos;转变为&apos;6-7&apos;,处理之后的数组</span><br><span class="line">    return item.landName === name</span><br><span class="line">  &#125;)</span><br><span class="line">  return &#123;</span><br><span class="line">    landName:name,//外循环用到的</span><br><span class="line">    info:arr_all//info是第二重循环需要用到的</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">  let arr2 =  dataOr.map((item1)=&gt;&#123;</span><br><span class="line">    let arr = time.map((item2)=&gt;&#123;</span><br><span class="line">          let status = false</span><br><span class="line">          let ocperson = &apos;&apos;</span><br><span class="line">          item1.info.map((item3)=&gt;&#123;</span><br><span class="line">            if(item2 === item3.time)&#123;</span><br><span class="line">              status = true</span><br><span class="line">              ocperson = item3.occupyType</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;)</span><br><span class="line">          return &#123;</span><br><span class="line">            time:item2,</span><br><span class="line">            status,</span><br><span class="line">            ocperson</span><br><span class="line">          &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    return&#123;</span><br><span class="line">        landName:item1.landName,</span><br><span class="line">        info:arr</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line">  </span><br></pre></td></tr></table></figure><br>    timeCut就是简单时间段，当需要B数组去match A数组的时候，就应该是A数组遍历。所以上述我写了timeCut.map(…)<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  timeCut()&#123;</span><br><span class="line">    let arr = [&apos;7-8&apos;,&apos;8-9&apos;,&apos;9-10&apos;,&apos;10-11&apos;,&apos;11-12&apos;,&apos;12-13&apos;,&apos;13-14&apos;,&apos;14-15&apos;,&apos;15-16&apos;,&apos;16-17&apos;,&apos;17-18&apos;,&apos;18-19&apos;,&apos;19-20&apos;,&apos;20-21&apos;,&apos;21-22&apos;]</span><br><span class="line">    return arr</span><br><span class="line">&#125;,</span><br><span class="line">  </span><br></pre></td></tr></table></figure><br>终于开始循环到页面里<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">  &lt;a-row class=&quot;align&quot;&gt;</span><br><span class="line">    &lt;a-col class=&quot;col&quot;&gt;</span><br><span class="line">        &lt;a-row class=&quot;row-item&quot;&gt;时间段&lt;/a-row&gt;</span><br><span class="line">        &lt;a-row class=&quot;row-item&quot; :key=&quot;&apos;cut&apos;+idx&quot; v-for=&quot;(item,idx) in timeCut&quot;&gt;&lt;/a-row&gt;</span><br><span class="line">    &lt;/a-col&gt;</span><br><span class="line">    &lt;!--  --&gt;</span><br><span class="line">    &lt;a-col :key=&quot;index&quot; v-for=&quot;(item,index) in dataSource&quot; class=&quot;col&quot;&gt;</span><br><span class="line">        &lt;a-row class=&quot;row-item&quot;&gt;&lt;/a-row&gt;</span><br><span class="line">        &lt;a-row class=&quot;row-item cor2&quot; :key=&quot;&apos;info&apos;+idx&quot; v-for=&quot;(timeOc,idx) in item.info&quot; :style=&quot;&#123;background:timeOc.status?cor1:&apos;#ffffff&apos;&#125;&quot;&gt;</span><br><span class="line">           &lt;!--  --&gt;</span><br><span class="line">          </span><br><span class="line">        &lt;/a-row&gt;</span><br><span class="line">    &lt;/a-col&gt;</span><br><span class="line">&lt;/a-row&gt;</span><br><span class="line">  </span><br></pre></td></tr></table></figure><br><span style="font-weight:bold;color:orange;">Notice: </span><span style="border-top: 1px dotted #ccffcc;color:orange">end,其他一些逻辑问题应该不值得我去记录，以后想起来了可以补充进去，这段时间还是学到蛮多东西的，其实只要学到了东西，时光就不算浪费 :)</span><p></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/18/版式设计end作业/" rel="next" title="版式设计end作业">
+                <i class="fa fa-chevron-left"></i> 版式设计end作业
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/08/25/试总结/" rel="prev" title="面试总结 : 一些细碎的知识点">
+                面试总结 : 一些细碎的知识点 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">gsnwjd王佳典</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">gsnwjd王佳典</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

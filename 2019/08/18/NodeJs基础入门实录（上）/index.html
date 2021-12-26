@@ -474,8 +474,16 @@
 <p></p><p style="color:#846e5e;font-weight:bold">子句的运用</p>数据操作常用的有三种语句——条件[where 和 or and]，排序[order]，聚类[group,min,max,avg,count,sum]限制[limit]<br>子句的使用可以组合使用，但是最好按照如下顺序。<br><span style="color:rgb(160, 143, 151);">WHERE(筛选)-&gt;GROUP(合并)-&gt;ORDER(排序)-&gt;LIMIT(限制)</span><br><br><span style="color:#bbb953cc">ORDER</span><br>SELECT name,all_score FROM user_tb WHERE `all_score`&gt;130 ORDER BY math_score ASC,chinese_score DESC<br><span style="border-bottom:1px dotted rgb(194, 104, 19);">从一张名为user_tb的表中找到name，和all_score两列，首先需要符合all_score&gt;130的条件才能被筛选出来，然后按照math_score的大小升序排序，如果价格相同，则按照chinese_score降序排序</span><p></p>
 <p><span style="color:#bbb953cc">GROUP</span><br>SELECT COUNT(*) FROM student_table<br><span style="border-bottom:1px dotted rgb(194, 104, 19);">查询结果为8，为记录条数</span><br>SELECT * FROM student_table GROUP BY class<br><span style="border-bottom:1px dotted rgb(194, 104, 19);">结果只剩下class未重复的第一条信息</span><br>SELECT class,COUNT(class) FROM student_table GROUP BY class<br><span style="border-bottom:1px dotted rgb(194, 104, 19);">可以计算出不同班级的总人数</span><br>SELECT class,AVG(all_score) FROM student_table GROUP BY class<br><span style="border-bottom:1px dotted rgb(194, 104, 19);">统计每个班的平均分</span></p>
 <p><span style="color:#bbb953cc">LIMIT</span><br>LIMIT子句的这个功能，常见于“网页分页+每页显示最大数”的应用场景。<br>SELECT all_score FROM student_table LIMIT 3,2<br><span style="border-bottom:1px dotted rgb(194, 104, 19);">输出查询结果中第4行开始的共2条内容</span></p>
-<p><span style="color:#6dc2e4cc;font-size:19px;font-weight:bold">未完待续 :)</span><br><span style="font-weight:bold;color:orange;">Notice: </span><span style="border-top: 1px dotted #ccffcc;color:orange">NodeJs基础入门实录（下）里会讲解一个超简约后台管理制作，也算实战吧</span></p>
-
+<!--
+<p>
+  <span style="color:#6dc2e4cc;font-size:19px;font-weight:bold">未完待续 :)</span>
+  <br>
+  <span style="font-weight:bold;color:orange;">Notice: </span>
+  <span style="border-top: 1px dotted #ccffcc;color:orange">
+    NodeJs基础入门实录（下）里会讲解一个超简约后台管理制作，也算实战吧
+  </span>
+</p>
+-->
       
     </div>
 

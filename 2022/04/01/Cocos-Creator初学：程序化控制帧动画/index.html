@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="&amp;nbsp;&amp;nbsp;——本文禁止转载,分享请注明网站出处: ）最近在学如何用Cocos Creator+TS开发2D游戏，发现这个教程里有些思维模式对于我来说，理解起来有些艰难，我只能用我的方法去捋一遍。首先想记录的就是程序化控制动画，教授者采用了面向对象的编写方法，其中还用到了一些js设计模式">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="gsnwjd王佳典">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Cocos Creator初学：程序化控制帧动画">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="嗯哼~">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>Cocos Creator初学：程序化控制帧动画 - 嗯哼~</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="嗯哼~">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="嗯哼~">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" href="/" title="Home">
+                    Home
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" href="/archives" title="Archives">
+                    Archives
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" href="/tags" title="Tags">
+                    Tags
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">Cocos Creator初学：程序化控制帧动画</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2022-04-01</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-tree"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/学不完的js/">#学不完的js</a> <a class="fw3 ph1 dib" href="/tags/游戏游戏/">#游戏游戏</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <p><span style="color:#8c8c8c;border-left:4px solid #775a88;">&nbsp;&nbsp;——本文禁止转载,分享请注明网站出处: ）</span><br>最近在学如何用Cocos Creator+TS开发2D游戏，发现这个教程里有些思维模式对于我来说，理解起来有些艰难，我只能用我的方法去捋一遍。首先想记录的就是程序化控制动画，教授者采用了面向对象的编写方法，其中还用到了一些js设计模式，比如单例模式，抽象工厂模式等，这里都打算记一下。<br>我们需要切换人物的动画状态，那我们首先得知道动画播放怎么设置，cocos有动画编辑器可以一帧一帧地手动拖入，但是如果我们要切换几十组动画，那么就会变得非常繁琐。最好就是用状态机控制，用代码定义每一组动画，点击按钮切换的时候，自动去播。<br><span style="line-height:40px;color:#57407c;font-weight:bold;">动画之前</span><br>首先新建一个ts文件，我们需要定义一个单例模式。因为我们需要在不同模块之间共享数据or方法。<blockquote><p>单例模式之所以这么叫，是因为它限制一个类只能有一个实例化对象。单例作为一个共享的资源命名空间，它将实现代码与全局命名空间隔离开来，从而为函数提供一个单一的访问点。</p>
+</blockquote>同时我们使用泛型去约束返回类型<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">export default class Singleton&#123;</span><br><span class="line">  private static _instance :any = null</span><br><span class="line">  static GetInstance&lt;T&gt;():T&#123;</span><br><span class="line">      if( this._instance === null )&#123;</span><br><span class="line">          this._instance = new this()</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      return this._instance</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>我们借助单例模式定义事件管理器(EventManager.ts)和资源管理器(ResourceManager.ts)，其中资源管理器用到了cocos文档里的资源批量加载loadDir用法(参考：<a href="https://docs.cocos.com/creator/manual/zh/asset/dynamic-load-resources.html#%E8%B5%84%E6%BA%90%E6%89%B9%E9%87%8F%E5%8A%A0%E8%BD%BD" style="color:#aea0c4;" target="_blank" rel="noopener">-&gt;资源批量加载</a>)<br>EventManager.ts<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">import Singleton from &apos;../Base/Singleton&apos;;</span><br><span class="line"></span><br><span class="line">interface IItem&#123;</span><br><span class="line">    func:Function,</span><br><span class="line">    ctx:unknown</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default class EventManager extends Singleton&#123;</span><br><span class="line">    static get Instance()&#123;</span><br><span class="line">        return super.GetInstance&lt;EventManager&gt;()</span><br><span class="line">    &#125;</span><br><span class="line">    //关卡字典</span><br><span class="line">    private eventDic : Map&lt;string,Array&lt;IItem&gt;&gt; = new Map()</span><br><span class="line">    on(eventName:string,func:Function,ctx?:unknown)&#123;</span><br><span class="line">        // 事件绑定</span><br><span class="line">        if(this.eventDic.has(eventName))&#123;</span><br><span class="line">            this.eventDic.get(eventName).push(&#123;func,ctx&#125;)</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            this.eventDic.set(eventName,[&#123;func,ctx&#125;])</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    off(eventName:string,func:Function)&#123;</span><br><span class="line">        //事件解绑</span><br><span class="line">        if(this.eventDic.has(eventName))&#123;</span><br><span class="line">            const index = this.eventDic.get(eventName).findIndex(i=&gt;i.func===func)</span><br><span class="line">            index&gt;-1 &amp;&amp; this.eventDic.get(eventName).splice(index,1)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    emit(eventName:string,...params :unknown[])&#123;</span><br><span class="line">        if(this.eventDic.has(eventName))&#123;</span><br><span class="line">            this.eventDic.get(eventName).forEach((&#123;func,ctx&#125;)=&gt;&#123;</span><br><span class="line">                //绑定上下文</span><br><span class="line">                ctx?func.apply(ctx,params):func(...params)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    clear()&#123;</span><br><span class="line">        //Map.prototype.clear()</span><br><span class="line">        this.eventDic.clear()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>ResourceManager.ts<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import &#123; SpriteFrame,resources &#125; from &apos;cc&apos;;</span><br><span class="line">import Singleton from &apos;../Base/Singleton&apos;;</span><br><span class="line"></span><br><span class="line">//拿到加载资源的方法</span><br><span class="line">export default class ResourceManager extends Singleton&#123;</span><br><span class="line">  static get Instance()&#123;</span><br><span class="line">    return super.GetInstance&lt;ResourceManager&gt;()</span><br><span class="line">  &#125;</span><br><span class="line">  loadDir(path:string,type:typeof SpriteFrame = SpriteFrame)&#123;</span><br><span class="line">    return new Promise&lt;SpriteFrame[]&gt;((resolve,reject)=&gt;&#123;</span><br><span class="line">        resources.loadDir(path, type, function (err, assets) &#123;</span><br><span class="line">            if(err)&#123;</span><br><span class="line">                reject(err)</span><br><span class="line">                return false</span><br><span class="line">            &#125;</span><br><span class="line">            resolve(assets)</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><span style="line-height:40px;color:#57407c;font-weight:bold;">动画状态机</span><br>图示例如下<img src="/2022/04/01/Cocos-Creator初学：程序化控制帧动画/state.png" alt="例子"><br><span style="line-height:40px;color:#57407c;font-weight:bold;">一组动画</span><br>这个时候我们再去看，一组动画是怎么被播放出来的。参考:<a href="https://docs.cocos.com/creator/manual/zh/animation/use-animation-curve.html" style="color:#aea0c4;" target="_blank" rel="noopener">-&gt;程序化控制动画</a></p>
+<p><hr><br>我们定义好一个动画状态机(State.ts)。<br>参数:路径(path)、循环还是不循环(wrapMode)、状态机制(stateBox)。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">1.需要知道Animation Clip</span><br><span class="line">2.需要播放动画的能力</span><br><span class="line">*/</span><br><span class="line">import &#123; _decorator, Component, Sprite, UITransform ,animation,AnimationClip, Animation, SpriteFrame&#125; from &apos;cc&apos;;</span><br><span class="line">import ResourceManager from &apos;../Runtime/ResourceManager&apos;;</span><br><span class="line">import &#123; StateMachine &#125; from &apos;./StateMachine&apos;;</span><br><span class="line"></span><br><span class="line">const ANIMATION_SPEED = 1/12</span><br><span class="line"></span><br><span class="line">export default class State&#123;</span><br><span class="line">  private animationClip:AnimationClip</span><br><span class="line">  constructor(</span><br><span class="line">    private fsm:StateMachine,</span><br><span class="line">    private path:string,</span><br><span class="line">    private wrapMode = AnimationClip.WrapMode.Normal)&#123;</span><br><span class="line">      this.init()</span><br><span class="line">  &#125;</span><br><span class="line">  async init()&#123;</span><br><span class="line">    //加载图片资源</span><br><span class="line">    const promise = ResourceManager.Instance.loadDir(this.path)</span><br><span class="line">    this.fsm.waitingList.push(promise)</span><br><span class="line">    const spriteFrames = await promise</span><br><span class="line">    this.animationClip = new AnimationClip();</span><br><span class="line"></span><br><span class="line">    // 创建一个对象轨道</span><br><span class="line">    const track  = new animation.ObjectTrack();</span><br><span class="line">    track.path = new animation.TrackPath().toComponent(Sprite).toProperty(&apos;spriteFrame&apos;)</span><br><span class="line">    const frames:Array&lt;[number,SpriteFrame]&gt; = spriteFrames.map((item,index)=&gt;[ANIMATION_SPEED*index,item])</span><br><span class="line">    track.channel.curve.assignSorted(frames);</span><br><span class="line"></span><br><span class="line">    // 最后将轨道添加到动画剪辑以应用</span><br><span class="line">    this.animationClip.duration = frames.length*ANIMATION_SPEED</span><br><span class="line">    this.animationClip.addTrack(track);</span><br><span class="line">    this.animationClip.name = this.path</span><br><span class="line">    //设置动画模式：循环还是不循环</span><br><span class="line">    this.animationClip.wrapMode = this.wrapMode</span><br><span class="line">  &#125;</span><br><span class="line">  run()&#123;</span><br><span class="line">    //这里播放</span><br><span class="line">    this.fsm.animationComponent.defaultClip = this.animationClip</span><br><span class="line">    this.fsm.animationComponent.play()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>我们由此制作人物的状态机<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &#123; _decorator, Animation &#125; from &apos;cc&apos;;</span><br><span class="line">import &#123; StateMachine,getInitParamsTrigger, getInitParamsNumber &#125; from &apos;../../Base/StateMachine&apos;;</span><br><span class="line">import &#123; PARAM_NAME_ENUM &#125; from &apos;../../Enums&apos;;</span><br><span class="line">import IdleSubStateMachine from &apos;./IdleSubState&apos;;</span><br><span class="line">import TurnLeftSubStateMachine from &apos;./TurnLeftSubStateMachine&apos;;</span><br><span class="line">const &#123; ccclass, property &#125; = _decorator;</span><br><span class="line"></span><br><span class="line">@ccclass(&apos;PlayerStateMachine&apos;)</span><br><span class="line">export class PlayerStateMachine extends StateMachine&#123;</span><br><span class="line">    async init()&#123;</span><br><span class="line">        this.animationComponent = this.addComponent(Animation)</span><br><span class="line">        this.initParams()</span><br><span class="line">        this.initStateMachines()</span><br><span class="line">        this.initAnimationEvent()</span><br><span class="line"></span><br><span class="line">        await Promise.all(this.waitingList)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    initParams()&#123;</span><br><span class="line">        this.params.set(PARAM_NAME_ENUM.IDLE,getInitParamsTrigger())</span><br><span class="line">        this.params.set(PARAM_NAME_ENUM.TURNLEFT,getInitParamsTrigger())</span><br><span class="line">        this.params.set(PARAM_NAME_ENUM.DIRECTION,getInitParamsNumber())</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    initStateMachines()&#123;</span><br><span class="line">        this.stateMachines.set(PARAM_NAME_ENUM.IDLE,new IdleSubStateMachine(this))</span><br><span class="line">        this.stateMachines.set(PARAM_NAME_ENUM.TURNLEFT,new TurnLeftSubStateMachine(this))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    run()&#123;</span><br><span class="line">        switch (this.currentState)&#123;</span><br><span class="line">            case this.stateMachines.get(PARAM_NAME_ENUM.TURNLEFT):</span><br><span class="line">            case this.stateMachines.get(PARAM_NAME_ENUM.IDLE):</span><br><span class="line">                if(this.params.get(PARAM_NAME_ENUM.TURNLEFT).value)&#123;</span><br><span class="line">                    this.currentState = this.stateMachines.get(PARAM_NAME_ENUM.TURNLEFT)</span><br><span class="line">                &#125;else if(this.params.get(PARAM_NAME_ENUM.IDLE).value)&#123;</span><br><span class="line">                    this.currentState = this.stateMachines.get(PARAM_NAME_ENUM.IDLE)</span><br><span class="line">                &#125;else&#123;</span><br><span class="line">                    //触发set方法，触发run方法</span><br><span class="line">                    this.currentState = this.currentState</span><br><span class="line">                &#125;</span><br><span class="line">            break;</span><br><span class="line">            default:</span><br><span class="line">                this.currentState = this.stateMachines.get(PARAM_NAME_ENUM.IDLE)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    initAnimationEvent()&#123;</span><br><span class="line">        this.animationComponent.on(Animation.EventType.FINISHED,()=&gt;&#123;</span><br><span class="line">            const name = this.animationComponent.defaultClip.name</span><br><span class="line">            const whiteList = [&apos;turn&apos;]</span><br><span class="line">            if(whiteList.some(v=&gt;name.includes(v)))&#123;</span><br><span class="line">                this.setParams(PARAM_NAME_ENUM.IDLE,true)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>我们由人物状态机定义一个关于人物（精灵）的对象，定义它的上下左右移动<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">import &#123; _decorator, Component, Sprite, UITransform &#125; from &apos;cc&apos;;</span><br><span class="line">import &#123; CONTROLLER_ENUM, DIRECTION_ENUM, EVENT_ENUM, PARAM_NAME_ENUM,ENTITY_STATE_ENUM, DIRECTION_ORDER_ENUM &#125; from &apos;../../Enums&apos;;</span><br><span class="line">import EventManager from &apos;../../Runtime/EventManager&apos;;</span><br><span class="line">import &#123; TILE_HEIGHT, TILE_WIDTH &#125; from &apos;../Tile/TileManager&apos;;</span><br><span class="line">import &#123; PlayerStateMachine &#125; from &apos;./PlayerStateMachine&apos;;</span><br><span class="line">const &#123; ccclass, property &#125; = _decorator;</span><br><span class="line"></span><br><span class="line">//程序化动画编辑</span><br><span class="line">//https://docs.cocos.com/creator/manual/zh/animation/use-animation-curve.html</span><br><span class="line"></span><br><span class="line">@ccclass(&apos;PlayerManager&apos;)</span><br><span class="line">export class PlayerManager extends Component &#123;</span><br><span class="line">    //当前位置</span><br><span class="line">    x:number=0</span><br><span class="line">    y:number=0</span><br><span class="line">    //目标位置</span><br><span class="line">    targetX:number=0</span><br><span class="line">    targetY:number=0</span><br><span class="line">    //速度</span><br><span class="line">    private readonly speed = 1/12</span><br><span class="line">    //状态机</span><br><span class="line">    fsm:PlayerStateMachine</span><br><span class="line">    //当前方向和状态</span><br><span class="line">    private _direction:DIRECTION_ENUM</span><br><span class="line">    private _state:ENTITY_STATE_ENUM</span><br><span class="line">    async init()&#123;</span><br><span class="line">        const sprite = this.addComponent(Sprite)</span><br><span class="line">        sprite.sizeMode = Sprite.SizeMode.CUSTOM</span><br><span class="line">        const transform = this.getComponent(UITransform)</span><br><span class="line">        transform.setContentSize(TILE_WIDTH*4,TILE_HEIGHT*4)</span><br><span class="line"></span><br><span class="line">        this.fsm = this.addComponent(PlayerStateMachine)</span><br><span class="line">        await this.fsm.init()</span><br><span class="line">        //退出init方法之后再切换状态</span><br><span class="line">        // this.fsm.setParams(PARAM_NAME_ENUM.IDLE,true)</span><br><span class="line">        this.direction = DIRECTION_ENUM.TOP</span><br><span class="line">        this.state = ENTITY_STATE_ENUM.IDLE</span><br><span class="line">        EventManager.Instance.on(EVENT_ENUM.PLAYER_CTRL,this.move,this)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    update()&#123;</span><br><span class="line">        this.updateXY()</span><br><span class="line">        this.node.setPosition(this.x*TILE_WIDTH-1.5*TILE_WIDTH ,-this.y*TILE_HEIGHT+1.5*TILE_HEIGHT)</span><br><span class="line">    &#125;</span><br><span class="line">    updateXY()&#123;</span><br><span class="line">        if(this.targetX&lt;this.x)&#123;</span><br><span class="line">            this.x -= this.speed</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            this.x += this.speed</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if(this.targetY&lt;this.y)&#123;</span><br><span class="line">            this.y -= this.speed</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            this.y += this.speed</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if(Math.abs(this.targetX - this.x)&lt;=0.1 &amp;&amp; Math.abs(this.targetY - this.y)&lt;=0.1)&#123;</span><br><span class="line">            this.y = this.targetY</span><br><span class="line">            this.x = this.targetX</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    get direction()&#123;</span><br><span class="line">        return this._direction</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    set direction(newDirection:DIRECTION_ENUM)&#123;</span><br><span class="line">        this._direction = newDirection</span><br><span class="line">        this.fsm.setParams(PARAM_NAME_ENUM.DIRECTION,DIRECTION_ORDER_ENUM[this._direction])</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    get state()&#123;</span><br><span class="line">        return this._state</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    set state(newState:ENTITY_STATE_ENUM)&#123;</span><br><span class="line">        this._state = newState</span><br><span class="line">        this.fsm.setParams(this._state,true)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    move(inputDirection:CONTROLLER_ENUM)&#123;</span><br><span class="line">        switch(inputDirection)&#123;</span><br><span class="line">            case CONTROLLER_ENUM.TOP:this.targetY -=1;break;</span><br><span class="line">            case CONTROLLER_ENUM.BOTTOM:this.targetY +=1;break;</span><br><span class="line">            case CONTROLLER_ENUM.LEFT:this.targetX -=1;break;</span><br><span class="line">            case CONTROLLER_ENUM.RIGHT:this.targetX +=1;break;</span><br><span class="line">            case CONTROLLER_ENUM.TURNLEFT:if(this.direction === DIRECTION_ENUM.TOP)&#123;</span><br><span class="line">                this.direction = DIRECTION_ENUM.LEFT</span><br><span class="line">            &#125;else if(this.direction === DIRECTION_ENUM.LEFT)&#123;</span><br><span class="line">                this.direction = DIRECTION_ENUM.BOTTOM</span><br><span class="line">            &#125;else if(this.direction === DIRECTION_ENUM.BOTTOM)&#123;</span><br><span class="line">                this.direction = DIRECTION_ENUM.RIGHT</span><br><span class="line">            &#125;else if(this.direction === DIRECTION_ENUM.RIGHT)&#123;</span><br><span class="line">                this.direction = DIRECTION_ENUM.TOP</span><br><span class="line">            &#125;</span><br><span class="line">            this.state = ENTITY_STATE_ENUM.TURNLEFT;break;</span><br><span class="line">            // case CONTROLLER_ENUM.TURNRIGHT:this.targetY -=1;break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/学不完的js/">#学不完的js</a> <a class="fw3 ph1 dib" href="/tags/游戏游戏/">#游戏游戏</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5">
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://avatars.githubusercontent.com/u/49892998" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="gsnwjd王佳典">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            永远期待参与到复杂项目中来  /  感谢你来看我的博客 :)  /  目前正在寻找合适的岗位
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5">
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>近期文章</h3>
+    
+        <p>
+            <a href="/2022/04/01/Cocos-Creator初学：程序化控制帧动画/">Cocos Creator初学：程序化控制帧动画</a>
+        </p>
+    
+        <p>
+            <a href="/2022/03/16/关于学了又忘的TS/">关于学了又忘的TS</a>
+        </p>
+    
+        <p>
+            <a href="/2022/02/26/展示型Vue项目-·-细节拾取/">展示型Vue项目 · 细节拾取</a>
+        </p>
+    
+        <p>
+            <a href="/2022/02/22/word文件批量转化成统一模板/">word文件批量转化成统一模板</a>
+        </p>
+    
+        <p>
+            <a href="/2021/12/27/一小时聊完Less/">一小时聊完Less</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/gsnwjd" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="pgldbm@foxmail.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                All right reserved | Design & Hexo <a class="link dim white" href="https://github.com/gsnwjd/">gsnwjd</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
